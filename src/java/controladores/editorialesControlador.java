@@ -20,12 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author camilo
  */
 @Controller
-@RequestMapping("autor.htm")
-public class autorControlador {
+@RequestMapping("editoriales.htm")
+public class editorialesControlador {
 
     private JdbcTemplate jdbc;
 
-    public autorControlador() {
+    public editorialesControlador() {
         conexion con = new conexion();
         this.jdbc = new JdbcTemplate(con.conectar());
     }
@@ -35,19 +35,20 @@ public class autorControlador {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "select * from autor;";
+        String SQL = "select * from editoriales;";
         List l;
         l = this.jdbc.queryForList(SQL);
 //        System.out.println(l.toString());
         mv.addObject("datos", l);
         return mv;
     }
-   //  @RequestMapping(method = RequestMethod.POST)
-//    public void añadir(@RequestParam("nombreAutor")String nombre,@RequestParam("tipoAutor")String tipo) {
+
+//    @RequestMapping(method = RequestMethod.POST)
+//    public void añadir(@RequestParam("nombreEditorial") String nombre) {
 //
 //        ModelAndView mv = new ModelAndView();
 //        mv.setViewName("autor");
-//        String SQL="insert into autor(nombre,tipo) values('"+nombre+"',"+"'"+tipo+"');";
+//        String SQL = "insert into editoriales(nombre) values('" + nombre + "');";
 //        List l;
 //        this.jdbc.execute(SQL);
 ////        System.out.println(l.toString());
@@ -55,11 +56,11 @@ public class autorControlador {
 //    }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void modificar(@RequestParam("idAutor") String id, @RequestParam("nombreAutor") String nombre, @RequestParam("tipoAutor") String tipo) {
+    public void modificar(@RequestParam("idEditorial") String id, @RequestParam("nombreEditorial") String nombre) {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "update autor set nombre='" + nombre + "',tipo='" + tipo + "'where id =" + id + ";";
+        String SQL = "update editoriales set nombre='" + nombre + "'where id =" + id + ";";
         List l;
         this.jdbc.execute(SQL);
 //        System.out.println(l.toString());
@@ -67,12 +68,12 @@ public class autorControlador {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ModelAndView eliminar(@RequestParam("idAutor") String id, ModelMap model) {
+    public ModelAndView eliminar(@RequestParam("idEditorial") String id, ModelMap model) {
         System.out.println("hola :" + id);
         //model.addAttribute("id",id);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "delete from autor where id =" + id + ";";
+        String SQL = "delete from editoriales where id =" + id + ";";
         this.jdbc.execute(SQL);
         return null;
     }

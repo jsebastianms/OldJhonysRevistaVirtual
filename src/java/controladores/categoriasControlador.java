@@ -20,12 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
  * @author camilo
  */
 @Controller
-@RequestMapping("autor.htm")
-public class autorControlador {
+@RequestMapping("categorias.htm")
+public class categoriasControlador {
+     private JdbcTemplate jdbc;
 
-    private JdbcTemplate jdbc;
-
-    public autorControlador() {
+    public categoriasControlador() {
         conexion con = new conexion();
         this.jdbc = new JdbcTemplate(con.conectar());
     }
@@ -35,31 +34,31 @@ public class autorControlador {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "select * from autor;";
+        String SQL = "select * from categorias;";
         List l;
         l = this.jdbc.queryForList(SQL);
 //        System.out.println(l.toString());
         mv.addObject("datos", l);
         return mv;
     }
-   //  @RequestMapping(method = RequestMethod.POST)
-//    public void añadir(@RequestParam("nombreAutor")String nombre,@RequestParam("tipoAutor")String tipo) {
-//
-//        ModelAndView mv = new ModelAndView();
-//        mv.setViewName("autor");
-//        String SQL="insert into autor(nombre,tipo) values('"+nombre+"',"+"'"+tipo+"');";
-//        List l;
-//        this.jdbc.execute(SQL);
-////        System.out.println(l.toString());
-////        mv.addObject("datos",l);
-//    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public void modificar(@RequestParam("idAutor") String id, @RequestParam("nombreAutor") String nombre, @RequestParam("tipoAutor") String tipo) {
+     @RequestMapping(method = RequestMethod.POST)
+    public void añadir(@RequestParam("nombreCategorias")String nombre,@RequestParam("descripcionCategorias")String descripcion) {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "update autor set nombre='" + nombre + "',tipo='" + tipo + "'where id =" + id + ";";
+        String SQL="insert into categorias(nombre,descripcion) values('"+nombre+"',"+"'"+descripcion+"');";
+        List l;
+        this.jdbc.execute(SQL);
+//        System.out.println(l.toString());
+//        mv.addObject("datos",l);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void modificar(@RequestParam("nombreCategoria") String id, @RequestParam("nombreCategorias") String nombre, @RequestParam("descripcionCategorias") String descripcion) {
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("autor");
+        String SQL = "update categorias set nombre='" + nombre + "',descripcion='" + descripcion + "'where id =" + id + ";";
         List l;
         this.jdbc.execute(SQL);
 //        System.out.println(l.toString());
@@ -67,7 +66,7 @@ public class autorControlador {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ModelAndView eliminar(@RequestParam("idAutor") String id, ModelMap model) {
+    public ModelAndView eliminar(@RequestParam("idCategoria") String id, ModelMap model) {
         System.out.println("hola :" + id);
         //model.addAttribute("id",id);
         ModelAndView mv = new ModelAndView();
@@ -76,4 +75,6 @@ public class autorControlador {
         this.jdbc.execute(SQL);
         return null;
     }
+    
+    
 }

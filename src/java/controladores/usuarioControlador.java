@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.controller;
 
 /**
  *
  * @author camilo
  */
 @Controller
-@RequestMapping("autor.htm")
-public class autorControlador {
+@RequestMapping("usuario.htm")
+public class usuarioControlador {
+        private JdbcTemplate jdbc;
 
-    private JdbcTemplate jdbc;
-
-    public autorControlador() {
+    public usuarioControlador() {
         conexion con = new conexion();
         this.jdbc = new JdbcTemplate(con.conectar());
     }
@@ -34,32 +34,32 @@ public class autorControlador {
     public ModelAndView autor() {
 
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("autor");
-        String SQL = "select * from autor;";
+        mv.setViewName("usuario");
+        String SQL = "select * from Usuario;";
         List l;
         l = this.jdbc.queryForList(SQL);
 //        System.out.println(l.toString());
         mv.addObject("datos", l);
         return mv;
     }
-   //  @RequestMapping(method = RequestMethod.POST)
-//    public void añadir(@RequestParam("nombreAutor")String nombre,@RequestParam("tipoAutor")String tipo) {
-//
-//        ModelAndView mv = new ModelAndView();
-//        mv.setViewName("autor");
-//        String SQL="insert into autor(nombre,tipo) values('"+nombre+"',"+"'"+tipo+"');";
-//        List l;
-//        this.jdbc.execute(SQL);
-////        System.out.println(l.toString());
-////        mv.addObject("datos",l);
-//    }
+     @RequestMapping(method = RequestMethod.POST)
+    public void añadir(@RequestParam("nombreUsuario")String nombre,@RequestParam("Apellido")String apellido,@RequestParam("dirreccionUsuario")String direccion,@RequestParam("telefonoUsuario")String telefono) {
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("usuario");
+        String SQL="insert into autor(nombre,apellido,dirrecion,telefono) values('"+nombre+"',"+"'"+apellido+"',"+"'"+direccion+"',"+"'"+telefono+"');";
+        List l;
+        this.jdbc.execute(SQL);
+//        System.out.println(l.toString());
+//        mv.addObject("datos",l);
+    }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void modificar(@RequestParam("idAutor") String id, @RequestParam("nombreAutor") String nombre, @RequestParam("tipoAutor") String tipo) {
+    public void modificar(@RequestParam("idUsuario")String id,@RequestParam("nombreUsuario")String nombre,@RequestParam("Apellido")String apellido,@RequestParam("dirreccionUsuario")String direccion,@RequestParam("telefonoUsuario")String telefono) {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("autor");
-        String SQL = "update autor set nombre='" + nombre + "',tipo='" + tipo + "'where id =" + id + ";";
+        String SQL = "update autor set nombre='" + nombre + "',apellido='" + apellido + "',direccion='" + direccion  + "',telefono='" + telefono + "'where id =" + id + ";";
         List l;
         this.jdbc.execute(SQL);
 //        System.out.println(l.toString());
@@ -67,12 +67,12 @@ public class autorControlador {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ModelAndView eliminar(@RequestParam("idAutor") String id, ModelMap model) {
+    public ModelAndView eliminar(@RequestParam("idUsuario") String id, ModelMap model) {
         System.out.println("hola :" + id);
         //model.addAttribute("id",id);
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("autor");
-        String SQL = "delete from autor where id =" + id + ";";
+        mv.setViewName("usuario");
+        String SQL = "delete from usuario where id =" + id + ";";
         this.jdbc.execute(SQL);
         return null;
     }
